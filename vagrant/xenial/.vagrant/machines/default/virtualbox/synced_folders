@@ -1,1 +1,1 @@
-{"virtualbox":{"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/benberg/VagrantBoxes/xenial","disabled":false,"__vagrantfile":true}}}
+{"virtualbox":{"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/benberg/Platform/vagrant/xenial","disabled":false,"__vagrantfile":true}}}
