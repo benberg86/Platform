@@ -1,0 +1,81 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  config.vm.define "py" do |py|
+	py.vm.box = "bento/ubuntu-16.04"
+	py.vm.hostname = "py"
+        py.vm.network :forwarded_port, guest:8080, host:8080
+	py.vm.network "public_network", bridge: "en1: Wi-Fi (AirPort)"
+	py.vm.provider "virtualbox" do |vb|
+		vb.name = "py"
+		vb.cpus = 4
+		vb.memory = 4096
+	end
+	py.vm.provision "ansible" do |ansible|
+	  ansible.playbook = "playbook.yml"
+	end
+ 
+  
+
+
+  end
+  config.vm.define "data" do |data|
+	data.vm.box = "elastic/ubuntu-16.04-x86_64"
+
+        data.vm.hostname = "elasticstack"
+
+        data.vm.network :forwarded_port, guest: 9200, host: 9201
+	data.vm.network :forwarded_port, guest: 5601, host: 5601
+
+
+        # If you export the box switch to the second line to keep the /elastic-stack/ folder
+        #data.vm.synced_folder "elastic-stack/", "/elastic-stack/"
+        #data.vm.synced_folder "elastic-stack/", "/elastic-stack/", type: "rsync"
+	data.vm.network "public_network", bridge: "en1: Wi-Fi (AirPort)"
+	data.vm.provider "virtualbox" do |vb|
+		vb.name = "elasticstack"
+		vb.cpus = 4
+		vb.memory = 8192
+	end
+
+
+end
+  
+
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  config.vm.network "public_network"
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  # config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = "1024"
+  # end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   apt-get update
+  #   apt-get install -y apache2
+  # SHELL
+end
