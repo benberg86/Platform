@@ -3,8 +3,15 @@
   hosts: py
   become: true
   tasks:
+    - name: Update Apt and all packages
+      apt:
+        name: "*"
+        state:latest
+        update_cache: yes
+
+
     - name: Installs nginx web server
-      apt: pkg=nginx state=installed update_cache=true
+      apt: pkg=nginx state=installed
       notify:
          - start nginx
   handlers:
