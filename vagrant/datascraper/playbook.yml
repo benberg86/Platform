@@ -6,7 +6,7 @@
     - name: Update Apt and all packages
       apt:
         name: "*"
-        state:latest
+        state: latest
         update_cache: yes
 
 
