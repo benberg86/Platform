@@ -3,17 +3,9 @@
   hosts: py
   become: true
   tasks:
-    - name: Update Apt and all packages
+    - name: Upgrade all packages to the latest version
       apt:
-        name: "*"
-        state: latest
+        upgrade: yes
         update_cache: yes
-
-
-    - name: Installs nginx web server
-      apt: pkg=nginx state=installed
-      notify:
-         - start nginx
-  handlers:
-    - name: start nginx
-      service: name=nginx state=started	
+        cache_valid_time: 86400
+      
