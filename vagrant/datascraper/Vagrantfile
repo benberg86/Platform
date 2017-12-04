@@ -9,7 +9,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "py" do |py|
 	py.vm.box = "bento/ubuntu-16.04"
 	py.vm.hostname = "py"
-        py.vm.network :forwarded_port, guest:8080, host:8080
+        py.vm.network :forwarded_port, guest:9200, host:9200
+	py.vm.network :forwarded_port, guest:5601, host:5601
 	py.vm.network "public_network", bridge: "en1: Wi-Fi (AirPort)"
 	py.vm.provider "virtualbox" do |vb|
 		vb.name = "py"
@@ -18,6 +19,7 @@ Vagrant.configure("2") do |config|
 	end
 	py.vm.provision "ansible" do |ansible|
 	  ansible.playbook = "playbook.yml"
+          ansible.playbook = "kibana.yml"
 	end
  
   
