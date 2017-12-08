@@ -10,8 +10,11 @@
         upgrade: yes
         update_cache: yes
         cache_valid_time: 86400
+    - name: Restart server
+      shell:shutdown -r now
+      pause: seconds=30
     - name: Task3 waiting for server to come back after
-      local_action: wait_for host={{ ansible_ssh_host }} state=started
+      local_action: wait_for host={{ ansible_ssh_host }} search_regex=OpenSSH port=22 timeout=300
 
 
 # Installing Kibana
