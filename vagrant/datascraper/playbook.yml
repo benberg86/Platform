@@ -1,6 +1,6 @@
 ---
-- name: Install nginx
-  hosts: py
+- name: Install Elasticsearch, update, reboot, install kibana
+  hosts: 10.0.0.85
   become: true
   roles:
     - { role: elasticsearch, es_instance_name: "node1" }
@@ -10,13 +10,13 @@
         upgrade: yes
         update_cache: yes
         cache_valid_time: 86400
-    - name: Restart server
-      shell:shutdown -r now
-      pause: seconds=30
-    - name: Task3 waiting for server to come back after
-      local_action: wait_for host={{ ansible_ssh_host }} search_regex=OpenSSH port=22 timeout=300
+    - name: Reboot the server for kernel update
+      shell: ( sleep 3 && /sbin/reboot & )
+      async: 0
+      poll: 0 
 
-
+    - name: Wait for the server to reboot
+      local_action: wait_for host="{{ansible_host}}" delay=15 state=started port="{{ansible_port}}" connect_timeout=10 timeout=180
 # Installing Kibana
 
 # Install Kibana 
